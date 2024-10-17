@@ -2,6 +2,10 @@ package com.mycompany.campustasksuite;
 
 import com.mycompany.campustasksuite.studentmanager.StudentManager;
 import java.awt.CardLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,8 +18,6 @@ import myprofile.MyProfile;
  */
 public class CampusTaskSuite extends javax.swing.JFrame {
 
-    public static int WIDTH;
-    public static int HEIGHT;
     private CardLayout cardLayout;
     private JPanel cardPanel;
     JPanel mainMenuPanel;
@@ -24,13 +26,6 @@ public class CampusTaskSuite extends javax.swing.JFrame {
     
     public CampusTaskSuite() {
         initComponents();
-        java.awt.Dimension panelSize = this.getPreferredSize();
-        this.WIDTH = panelSize.width;
-        this.HEIGHT = panelSize.height;
-        
-        System.out.println("MAIN");
-        System.out.println(this.WIDTH);
-
         initCustomComponents();
     }
     
@@ -39,7 +34,7 @@ public class CampusTaskSuite extends javax.swing.JFrame {
         cardPanel = new JPanel(cardLayout);
         mainMenuPanel = new JPanel();
         studentManager = new StudentManager();
-        myProfile = new MyProfile(cardLayout, cardPanel, mainMenuPanel);
+        myProfile = new MyProfile();
         
         mainMenuPanel.setLayout(null);
         java.awt.Dimension panelSize = this.getPreferredSize();
@@ -47,10 +42,13 @@ public class CampusTaskSuite extends javax.swing.JFrame {
         
         mainMenuPanel.add(jButtonStudentManager);
         mainMenuPanel.add(jButtonMyProfile);
+        mainMenuPanel.add(jLabelWelcome);
 
         cardPanel.add(mainMenuPanel, "MainMenu");
         cardPanel.add(studentManager, "StudentManager");
         cardPanel.add(myProfile, "MyProfile");
+        
+        this.updateWelcomeMessage();
 
         this.setContentPane(cardPanel);
         cardLayout.show(cardPanel, "MainMenu");
@@ -65,22 +63,53 @@ public class CampusTaskSuite extends javax.swing.JFrame {
     }
     
     public void showMainMenuPanel() {
+        this.updateWelcomeMessage();
         cardLayout.show(cardPanel, "MainMenu");
-        adjustFrameSize(mainMenuPanel); // Adjust the frame size based on the Main Menu panel
+        adjustFrameSize(mainMenuPanel); 
     }
     
     private void showMyProfilePanel() {
         cardLayout.show(cardPanel, "MyProfile");
-        adjustFrameSize(myProfile); // Adjust the frame size based on the MyProfile panel
+        adjustFrameSize(myProfile); 
     }
-
-   
+    
+    private void showStudentManagerPanel()
+    {
+        cardLayout.show(cardPanel, "StudentManager");
+        adjustFrameSize(studentManager);
+    }
+    
+    private void updateWelcomeMessage()
+    {
+        String profileInfo = this.myProfile.readProfileInfo();
+        String[] profileInfoList = profileInfo.split(",");
+        
+        String name = profileInfoList[0];
+        String year = profileInfoList[1];
+        Boolean scholarship = Boolean.parseBoolean(profileInfoList[2]);
+        String message;
+        
+        if (scholarship)
+        {
+            message = "bursier";
+        }
+        else
+        {
+            message = "fără bursă";
+        }
+        
+        String welcomeMessage = "Bună ziua, " + name + " " + year + " " + message + "!";
+        this.jLabelWelcome.setText(welcomeMessage);
+        
+        System.out.println(scholarship);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jButtonStudentManager = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelWelcome = new javax.swing.JLabel();
         jButtonMyProfile = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -93,11 +122,10 @@ public class CampusTaskSuite extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel1.setText("Bine ați venit, Teglaș Bogdan!");
+        jLabelWelcome.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabelWelcome.setText("Bine ați venit, Teglaș Bogdan!");
 
         jButtonMyProfile.setText("My Profile");
-        jButtonMyProfile.setActionCommand("My Profile");
         jButtonMyProfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonMyProfileActionPerformed(evt);
@@ -108,48 +136,38 @@ public class CampusTaskSuite extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(241, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(193, 193, 193))
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButtonMyProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonStudentManager, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(662, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(jLabel1)
-                .addGap(147, 147, 147)
-                .addComponent(jButtonStudentManager, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(81, 81, 81)
+                .addComponent(jLabelWelcome)
+                .addGap(21, 21, 21)
                 .addComponent(jButtonMyProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(jButtonStudentManager, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(238, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonStudentManagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStudentManagerActionPerformed
-        cardLayout.show(cardPanel, "StudentManager");
-
-        cardPanel.revalidate();
-        cardPanel.repaint();
+        showStudentManagerPanel();
     }//GEN-LAST:event_jButtonStudentManagerActionPerformed
 
     private void jButtonMyProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMyProfileActionPerformed
-//        java.awt.Dimension panelSize = myProfile.getPreferredSize();
-//        
-//        this.setSize(panelSize.width, panelSize.height);
-//        cardLayout.show(cardPanel, "MyProfile");
-//        
-//        cardPanel.revalidate();
-//        cardPanel.repaint();
-    showMyProfilePanel();
+        showMyProfilePanel();
     }//GEN-LAST:event_jButtonMyProfileActionPerformed
 
    
@@ -188,6 +206,6 @@ public class CampusTaskSuite extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonMyProfile;
     private javax.swing.JButton jButtonStudentManager;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelWelcome;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,1 +1,1 @@
-Teglas Bogdan, IIS 1, true
+Bogdan,IIS 1,true
