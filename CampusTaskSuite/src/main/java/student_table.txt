@@ -1,0 +1,9 @@
+Ion Mircea,24,10.0,Informatica,1
+Popescu Mihai,21,8.0,Mate-Info,2
+Pop Aurica,22,9.0,Biologie,2
+Adrian Ilie,21,10.0,Biologie,2
+Ion Mircea,24,10.0,Informatica,1
+Popescu Mihai,21,8.0,Mate-Info,2
+Pop Aurica,22,9.0,Biologie,2
+Adrian Ilie,21,10.0,Biologie,2
+Louis Munteanu,20,8.0,Litere,2

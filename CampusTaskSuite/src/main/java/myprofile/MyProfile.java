@@ -22,7 +22,7 @@ import javax.swing.JPanel;
  */
 public class MyProfile extends javax.swing.JPanel {
     
-    public String profileFilePath = "./src/main/java/myprofile/my_profile_settings.txt";
+    public String profileFilePath = "./src/main/java/databases/my_profile_settings.txt";
 
     public MyProfile() {
         initComponents();
@@ -213,7 +213,7 @@ public class MyProfile extends javax.swing.JPanel {
         System.out.println(content);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(profileFilePath))) {
-            writer.write(content);
+            writer.write(content);  
             writer.newLine(); 
             writer.flush();
             System.out.println("Written succesfully");

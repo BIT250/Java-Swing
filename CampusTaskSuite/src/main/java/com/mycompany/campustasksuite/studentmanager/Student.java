@@ -21,6 +21,20 @@ public class Student {
         this.year = year;
     }
     
+    public Student(String studentFromFile)
+    {
+        this.id = lastId + 1;
+        lastId = id;
+        
+        String[] studentDetailsList = studentFromFile.split(",");
+        this.name = studentDetailsList[0];
+        this.age = Integer.parseInt(studentDetailsList[1]);
+        this.grade = Float.parseFloat(studentDetailsList[2]);
+        this.department = studentDetailsList[3];
+        this.year = Integer.parseInt(studentDetailsList[4]);
+               
+    }
+    
     public int getId() {
         return id;
     }
@@ -43,6 +57,18 @@ public class Student {
     
     public int getYear() {
         return year;
+    }
+    
+    public String toString()
+    {
+        String elevString = this.name + "," + 
+                String.valueOf(this.age) + "," + 
+                String.valueOf(this.grade) + "," + 
+                String.valueOf(this.department) + "," + 
+                String.valueOf(this.year);
+        
+        return elevString;
+        
     }
  
 }

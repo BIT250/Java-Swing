@@ -59,7 +59,7 @@ public class CampusTaskSuite extends javax.swing.JFrame {
     private void adjustFrameSize(JPanel panel) {
         java.awt.Dimension panelSize = panel.getPreferredSize();
         this.setSize(panelSize.width, panelSize.height);
-        this.revalidate(); // Revalidate to refresh the layout and apply the size changes
+        this.revalidate(); 
     }
     
     public void showMainMenuPanel() {
