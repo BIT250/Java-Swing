@@ -110,7 +110,7 @@ public class StudentManager extends javax.swing.JPanel {
             jTable1.getColumnModel().getColumn(4).setHeaderValue("Grade");
         }
 
-        jComboBoxSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Age", "Grade", "Department" }));
+        jComboBoxSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name", "Age", "Grade", "Department", "Year" }));
 
         jButtonSort.setText("Sort");
         jButtonSort.addActionListener(new java.awt.event.ActionListener() {
