@@ -380,4 +380,10 @@ public class StudentTableModel extends AbstractTableModel{
         fireTableDataChanged();  
     }
     
+    public void deleteRow(int row)
+    {
+       this.data.remove(row);
+       fireTableDataChanged();  
+    }
+    
 }

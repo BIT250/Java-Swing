@@ -4,6 +4,8 @@
  */
 package com.mycompany.campustasksuite.studentmanager;
 import com.mycompany.campustasksuite.CampusTaskSuite;
+import java.awt.Color;
+import javax.swing.JButton;
 import javax.swing.table.TableRowSorter;
 /**
  *
@@ -11,15 +13,72 @@ import javax.swing.table.TableRowSorter;
  */
 public class StudentManager extends javax.swing.JPanel {
     StudentTableModel studentModel;
+    private boolean isDarkMode = false;
+
+    private final Color lightBackground = Color.WHITE;
+    private final Color lightForeground = Color.BLACK;
+    private final Color darkBackground = Color.DARK_GRAY;
+    private final Color darkForeground = Color.WHITE;
+    
+    private final String path_to_database = "./src/main/java/databases/";
+    
     public StudentManager() {
         initComponents();
+
+        
         studentModel = new StudentTableModel();
         jTable1.setModel(studentModel);
         studentModel.readData();
         
         TableRowSorter<StudentTableModel> sorter = new TableRowSorter<>(studentModel);
         jTable1.setRowSorter(sorter);
+                
         
+    }
+    
+    private void toggleDarkMode() {
+        isDarkMode = !isDarkMode;  // Toggle the mode
+
+        // Update colors based on the current mode
+        if (isDarkMode) {
+            this.setBackground(darkBackground);
+            jTable1.setBackground(darkBackground);
+            jTable1.setForeground(darkForeground);
+            jScrollPane1.getViewport().setBackground(darkBackground);
+
+            // Update button text and color for dark mode
+            jButtonDark.setText("Enable Light Mode");
+            jButtonDark.setBackground(darkBackground);
+            jButtonDark.setForeground(darkForeground);
+
+            // Set labels to white
+            jLabelTitle.setForeground(darkForeground);
+            jLabel1.setForeground(darkForeground);
+            jLabel2.setForeground(darkForeground);
+            jLabel3.setForeground(darkForeground);
+            jLabel4.setForeground(darkForeground);
+            jLabel5.setForeground(darkForeground);
+            jLabel6.setForeground(darkForeground);
+        } else {
+            this.setBackground(lightBackground);
+            jTable1.setBackground(lightBackground);
+            jTable1.setForeground(lightForeground);
+            jScrollPane1.getViewport().setBackground(lightBackground);
+
+            // Update button text and color for light mode
+            jButtonDark.setText("Enable Dark Mode");
+            jButtonDark.setBackground(lightBackground);
+            jButtonDark.setForeground(lightForeground);
+
+            // Set labels to black
+            jLabelTitle.setForeground(lightForeground);
+            jLabel1.setForeground(lightForeground);
+            jLabel2.setForeground(lightForeground);
+            jLabel3.setForeground(lightForeground);
+            jLabel4.setForeground(lightForeground);
+            jLabel5.setForeground(lightForeground);
+            jLabel6.setForeground(lightForeground);
+    }
     }
 
     @SuppressWarnings("unchecked")
@@ -54,6 +113,8 @@ public class StudentManager extends javax.swing.JPanel {
         jTextFieldFilterValue = new javax.swing.JTextField();
         jButtonDelete = new javax.swing.JButton();
         jToggleButtonFilter = new javax.swing.JToggleButton();
+        jButtonDark = new javax.swing.JButton();
+        jButtonReport = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1520, 800));
         setRequestFocusEnabled(false);
@@ -203,6 +264,11 @@ public class StudentManager extends javax.swing.JPanel {
         jTextFieldFilterValue.setText("Value");
 
         jButtonDelete.setText("Delete");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
 
         jToggleButtonFilter.setText("Filter");
         jToggleButtonFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -211,81 +277,109 @@ public class StudentManager extends javax.swing.JPanel {
             }
         });
 
+        jButtonDark.setText("DarkMode");
+        jButtonDark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDarkActionPerformed(evt);
+            }
+        });
+
+        jButtonReport.setText("Generate Report");
+        jButtonReport.setActionCommand("");
+        jButtonReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(362, 362, 362)
+                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 1034, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonSort)
-                                        .addGap(171, 171, 171)
-                                        .addComponent(jComboBoxFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(27, 27, 27)
-                                        .addComponent(jComboBoxFilterSign, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextFieldFilterValue, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jToggleButtonFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 768, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonSort)
+                                .addGap(171, 171, 171)
+                                .addComponent(jComboBoxFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(jComboBoxFilterSign, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(67, 67, 67)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5))
-                                .addGap(107, 107, 107)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextFieldGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBoxDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jRadioButtonYear1)
-                                                .addGap(50, 50, 50)
-                                                .addComponent(jRadioButtonYear2))
-                                            .addComponent(jSpinnerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(57, 57, 57)
-                                        .addComponent(jRadioButtonYear3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jRadioButtonYear4))))
+                                .addComponent(jTextFieldFilterValue, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jToggleButtonFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(268, 268, 268)
-                                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(257, 257, 257)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(163, 163, 163))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(194, 194, 194))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(206, 206, 206))))))
+                                .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 768, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(362, 362, 362)
-                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(28, 58, Short.MAX_VALUE))
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addGap(107, 107, 107)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jRadioButtonYear1)
+                                        .addGap(50, 50, 50)
+                                        .addComponent(jRadioButtonYear2))
+                                    .addComponent(jSpinnerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(57, 57, 57)
+                                .addComponent(jRadioButtonYear3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRadioButtonYear4))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(268, 268, 268)
+                        .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(163, 163, 163))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(194, 194, 194))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(206, 206, 206))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonDark)
+                                .addGap(57, 57, 57))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonDark))))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSort)
@@ -391,20 +485,35 @@ public class StudentManager extends javax.swing.JPanel {
             System.out.println("Buton filtrare dezactivat");
             studentModel.readData();
         }
-            
-                
-        
-        
-        
         
     }//GEN-LAST:event_jToggleButtonFilterActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        int[] selectedRows = jTable1.getSelectedRows();
+         // Iterate from last to first to avoid index shifting
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            this.studentModel.deleteRow(selectedRows[i]);
+        }
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonDarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDarkActionPerformed
+        this.toggleDarkMode();
+    }//GEN-LAST:event_jButtonDarkActionPerformed
+
+    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReportActionPerformed
+        GradeReportGenerator reportGenerator = new GradeReportGenerator(studentModel);
+        reportGenerator.generatePdfReport(this.path_to_database + "GradeDistributionReport.pdf");
+        System.out.println("Generated with success");
+    }//GEN-LAST:event_jButtonReportActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonBack;
+    private javax.swing.JButton jButtonDark;
     private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonReport;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSort;
     private javax.swing.JComboBox<String> jComboBoxDepartment;
