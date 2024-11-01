@@ -4,6 +4,7 @@
  */
 package com.mycompany.campustasksuite.studentmanager;
 import com.mycompany.campustasksuite.CampusTaskSuite;
+import javax.swing.table.TableRowSorter;
 /**
  *
  * @author Bogdan
@@ -15,6 +16,9 @@ public class StudentManager extends javax.swing.JPanel {
         studentModel = new StudentTableModel();
         jTable1.setModel(studentModel);
         studentModel.readData();
+        
+        TableRowSorter<StudentTableModel> sorter = new TableRowSorter<>(studentModel);
+        jTable1.setRowSorter(sorter);
         
     }
 
@@ -45,8 +49,13 @@ public class StudentManager extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jSpinnerAge = new javax.swing.JSpinner();
         jButtonSave = new javax.swing.JButton();
+        jComboBoxFilter = new javax.swing.JComboBox<>();
+        jComboBoxFilterSign = new javax.swing.JComboBox<>();
+        jTextFieldFilterValue = new javax.swing.JTextField();
+        jButtonDelete = new javax.swing.JButton();
+        jToggleButtonFilter = new javax.swing.JToggleButton();
 
-        setPreferredSize(new java.awt.Dimension(1520, 729));
+        setPreferredSize(new java.awt.Dimension(1520, 800));
         setRequestFocusEnabled(false);
 
         jLabelTitle.setFont(new java.awt.Font("Corbel", 3, 48)); // NOI18N
@@ -187,78 +196,105 @@ public class StudentManager extends javax.swing.JPanel {
             }
         });
 
+        jComboBoxFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id", "Name", "Department", "Year", "Grade" }));
+
+        jComboBoxFilterSign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "=", "<", ">", "conține", "<=", ">=" }));
+
+        jTextFieldFilterValue.setText("Value");
+
+        jButtonDelete.setText("Delete");
+
+        jToggleButtonFilter.setText("Filter");
+        jToggleButtonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonFilterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonSort)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1)
-                                .addGap(170, 170, 170))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(400, 400, 400)))
-                        .addContainerGap(516, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 768, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonSort)
+                                        .addGap(171, 171, 171)
+                                        .addComponent(jComboBoxFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(27, 27, 27)
+                                        .addComponent(jComboBoxFilterSign, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldFilterValue, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jToggleButtonFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 768, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(67, 67, 67)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5))
+                                .addGap(107, 107, 107)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBoxDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jRadioButtonYear1)
+                                                .addGap(50, 50, 50)
+                                                .addComponent(jRadioButtonYear2))
+                                            .addComponent(jSpinnerAge, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(57, 57, 57)
+                                        .addComponent(jRadioButtonYear3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jRadioButtonYear4))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(268, 268, 268)
+                                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(257, 257, 257)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(163, 163, 163))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(194, 194, 194))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(10, 10, 10)))
-                                .addGap(260, 260, 260))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(103, 103, 103)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel5))
-                                        .addGap(107, 107, 107)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTextFieldGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBoxDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(jRadioButtonYear1)
-                                                        .addGap(50, 50, 50)
-                                                        .addComponent(jRadioButtonYear2))
-                                                    .addComponent(jSpinnerAge))
-                                                .addGap(57, 57, 57)
-                                                .addComponent(jRadioButtonYear3)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jRadioButtonYear4))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(268, 268, 268)
-                                        .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))))
+                                        .addGap(206, 206, 206))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(362, 362, 362)
+                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(28, 58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSort)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxSort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxFilter)
+                    .addComponent(jComboBoxFilterSign, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldFilterValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButtonFilter))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -286,12 +322,14 @@ public class StudentManager extends javax.swing.JPanel {
                             .addComponent(jTextFieldGrade, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(29, 29, 29)
                         .addComponent(jButtonAdd)
-                        .addGap(75, 75, 75)
+                        .addGap(45, 45, 45)
                         .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonDelete)
+                .addGap(64, 64, 64))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -336,14 +374,42 @@ public class StudentManager extends javax.swing.JPanel {
         studentModel.saveData();  
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
+    private void jToggleButtonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonFilterActionPerformed
+        
+        if (this.jToggleButtonFilter.isSelected())
+        {
+            System.out.println("Buton filtrare apasat");
+            
+            String field = (String) this.jComboBoxFilter.getSelectedItem();
+            String operator = (String) this.jComboBoxFilterSign.getSelectedItem();
+            String value = (String) this.jTextFieldFilterValue.getText();
+            
+            studentModel.filterData(field, operator, value);
+        }
+        else
+        {
+            System.out.println("Buton filtrare dezactivat");
+            studentModel.readData();
+        }
+            
+                
+        
+        
+        
+        
+    }//GEN-LAST:event_jToggleButtonFilterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonBack;
+    private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSort;
     private javax.swing.JComboBox<String> jComboBoxDepartment;
+    private javax.swing.JComboBox<String> jComboBoxFilter;
+    private javax.swing.JComboBox<String> jComboBoxFilterSign;
     private javax.swing.JComboBox<String> jComboBoxSort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -359,7 +425,9 @@ public class StudentManager extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerAge;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldFilterValue;
     private javax.swing.JTextField jTextFieldGrade;
     private javax.swing.JTextField jTextFieldName;
+    private javax.swing.JToggleButton jToggleButtonFilter;
     // End of variables declaration//GEN-END:variables
 }
