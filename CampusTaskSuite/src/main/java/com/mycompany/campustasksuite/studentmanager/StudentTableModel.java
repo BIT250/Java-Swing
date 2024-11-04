@@ -1,21 +1,14 @@
 package com.mycompany.campustasksuite.studentmanager;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 import javax.swing.table.AbstractTableModel;
 
 public class StudentTableModel extends AbstractTableModel{
     List<Student> data = new ArrayList<>();
     private final String[] columnNames = {"ID", "Name", "Age", "Grade", "Department", "Year"};
-    String filePath = "./src/main/java/databases/student_table.txt";
 
     @Override
     public int getRowCount() {
@@ -46,51 +39,56 @@ public class StudentTableModel extends AbstractTableModel{
         return columnNames[column]; 
     }
     
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return switch (columnIndex) {
+            case 0 -> Integer.class;
+            case 1 -> String.class;
+            case 2 -> Integer.class;
+            case 3 -> Float.class;
+            case 4 -> String.class;
+            case 5 -> Integer.class;
+            default -> Object.class;
+        }; 
+}
+    
+    @Override
+    public boolean isCellEditable(int row, int col)
+      { return col != 0; }
+    
+    @Override
+    public void setValueAt(Object value, int row, int col) {
+        Student student = data.get(row);
+
+        switch (col) {
+            case 1 -> student.setName((String) value);
+            case 2 -> student.setAge(Integer.parseInt(value.toString()));
+            case 3 -> student.setGrade(Float.parseFloat(value.toString()));
+            case 4 -> student.setDepartment((String) value);
+            case 5 -> student.setYear(Integer.parseInt(value.toString()));
+        }
+
+        fireTableCellUpdated(row, col);
+    }
+    
 
     void addRow(Student student) {
         this.data.add(student);
+        DerbyDatabase.insertStudent(student);
         fireTableRowsInserted(data.size() - 1, data.size() - 1);  
     }
     
-    public void sortData(String column) {
-        switch (column.toLowerCase()) {
-            case "name" -> Collections.sort(data, Comparator.comparing(Student::getName));
-            case "age" -> Collections.sort(data, Comparator.comparingInt(Student::getAge));
-            case "grade" -> Collections.sort(data, Comparator.comparing(Student::getGrade));
-            case "department" -> Collections.sort(data, Comparator.comparing(Student::getDepartment));
-            case "year" -> Collections.sort(data, Comparator.comparing(Student::getYear));
-            default -> {
-                return;
-            }
-        }
-        fireTableDataChanged();  
-    }
-    
     public void saveData(){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) { // Open in overwrite mode (without 'true')
-            for (Student student : data) {
-                String studentString = student.toString();
-                writer.write(studentString);
-                writer.newLine(); // Add a new line after each student's data
-            }
-        } catch (IOException e) {
+        DerbyDatabase.deleteAllStudents();
+        for (Student student : data) {
+            DerbyDatabase.insertStudent(student);
         }
+
     }
     
     public void readData()
     {
-        this.data = new ArrayList<>();
-        try(Scanner scanner = new Scanner(new File(this.filePath))){
-            while(scanner.hasNextLine()){
-                String line = scanner.nextLine();
-                data.add(new Student(line));
-            }
-            fireTableDataChanged();  
-
-            
-        }
-        catch(FileNotFoundException e){
-        }
+        this.data = DerbyDatabase.selectAllStudents();
     }
     
     public void filterData(String field, String operator, String value)
@@ -109,27 +107,7 @@ public class StudentTableModel extends AbstractTableModel{
         
         }
     }
-    
-    @Override
-    public boolean isCellEditable(int row, int col)
-      { return col != 0; }
-    
-    @Override
-
-    public void setValueAt(Object value, int row, int col) {
-        Student student = data.get(row);
-
-        switch (col) {
-            case 1 -> student.setName((String) value);
-            case 2 -> student.setAge(Integer.parseInt(value.toString()));
-            case 3 -> student.setGrade(Float.parseFloat(value.toString()));
-            case 4 -> student.setDepartment((String) value);
-            case 5 -> student.setYear(Integer.parseInt(value.toString()));
-        }
-
-        fireTableCellUpdated(row, col);
-    }
-    
+        
     private void filterName(String operator, String value)
     {
         List<Student> new_data = new ArrayList<>();
@@ -386,4 +364,18 @@ public class StudentTableModel extends AbstractTableModel{
        fireTableDataChanged();  
     }
     
+    public void sortData(String column) {
+        switch (column.toLowerCase()) {
+            case "name" -> Collections.sort(data, Comparator.comparing(Student::getName));
+            case "age" -> Collections.sort(data, Comparator.comparingInt(Student::getAge));
+            case "grade" -> Collections.sort(data, Comparator.comparing(Student::getGrade));
+            case "department" -> Collections.sort(data, Comparator.comparing(Student::getDepartment));
+            case "year" -> Collections.sort(data, Comparator.comparing(Student::getYear));
+            default -> {
+                return;
+            }
+        }
+        fireTableDataChanged();  
+    }
+
 }

@@ -30,6 +30,16 @@ public class Student {
         lastId = id;
     }
 
+    Student(int id, String name, int age, float grade, String department, int year) {
+        this.id = id;
+        lastId = id;
+        this.name = name;
+        this.age = age;
+        this.grade = grade;
+        this.department = department;
+        this.year = year;
+    }
+
     public int getId() {
         return id;
     }

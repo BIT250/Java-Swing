@@ -5,6 +5,7 @@
 package com.mycompany.campustasksuite.studentmanager;
 import com.mycompany.campustasksuite.CampusTaskSuite;
 import java.awt.Color;
+import java.util.Comparator;
 import javax.swing.JButton;
 import javax.swing.table.TableRowSorter;
 /**
@@ -32,7 +33,7 @@ public class StudentManager extends javax.swing.JPanel {
         
         TableRowSorter<StudentTableModel> sorter = new TableRowSorter<>(studentModel);
         jTable1.setRowSorter(sorter);
-                
+        
         
     }
     
@@ -462,6 +463,12 @@ public class StudentManager extends javax.swing.JPanel {
         float grade = Float.parseFloat(this.jTextFieldGrade.getText());
         
         studentModel.addRow(new Student(name, age, grade, department, year));
+
+//        AddStudentDialog dialog = new AddStudentDialog();
+//        dialog.setVisible(true); // Show the modal dialog
+
+
+
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
